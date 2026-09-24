@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: smartchat
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: TU_CLIENT_ID
+            client-secret: TU_SECRET
+            scope:
+              - email
+              - profile
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/smartchat
+
+jwt:
+  secret: SmartChatSecretKey2026SuperSecure
+  expiration: 86400000
+
+server:
+  port: 8080

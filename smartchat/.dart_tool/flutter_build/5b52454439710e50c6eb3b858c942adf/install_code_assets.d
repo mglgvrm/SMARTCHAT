@@ -1,0 +1,1 @@
+ C:\\Users\\HP\\Desktop\\smartchat\\smartchat\\.dart_tool\\flutter_build\\5b52454439710e50c6eb3b858c942adf\\native_assets.json: 
