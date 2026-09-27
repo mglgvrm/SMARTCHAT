@@ -20,7 +20,7 @@ RUN sed -e "s|\${FIREBASE_PRIVATE_KEY_ID}|$FIREBASE_PRIVATE_KEY_ID|g" \
         -e "s|\${FIREBASE_PRIVATE_KEY}|$FIREBASE_PRIVATE_KEY|g" \
         -e "s|\${FIREBASE_CLIENT_EMAIL}|$FIREBASE_CLIENT_EMAIL|g" \
         -e "s|\${FIREBASE_CLIENT_ID}|$FIREBASE_CLIENT_ID|g" \
-        src/main/resources/firebase/serviceAccountKey.template.json > src/main/resources/firebase/serviceAccountKey.json
+        src/main/resources/firebase/serviceAccountKey.json
 
 RUN mvn clean package -DskipTests -B
 
