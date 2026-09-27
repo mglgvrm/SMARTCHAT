@@ -1,5 +1,5 @@
 # ---------- Etapa 1: build ----------
-FROM maven:3.9-eclipse-temurin-17 AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
 # Estas ARG reciben el valor de las variables de entorno que configures en Render
@@ -25,7 +25,7 @@ RUN sed -e "s|\${FIREBASE_PRIVATE_KEY_ID}|$FIREBASE_PRIVATE_KEY_ID|g" \
 RUN mvn clean package -DskipTests -B
 
 # ---------- Etapa 2: imagen final ----------
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
