@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartchat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:smartchat/presentation/bloc/user/user_bloc.dart';
+import 'package:smartchat/presentation/pages/user/messages/chat_page.dart';
+import 'package:smartchat/presentation/pages/user/messages/conversations_page.dart';
 import 'package:smartchat/presentation/pages/user/user_cards.dart';
 
 
@@ -15,7 +18,7 @@ const Color smartChatBlue = Color(0xFF1677FF);
 
 class _HomeUserState extends State<HomeUser> {
   final List<Widget> _pageList = [];
-
+  String? _messagesTargetUserId;
   int _currentIndex = 0;
 
   final PageController _pageController = PageController();
@@ -185,7 +188,28 @@ class _HomeUserState extends State<HomeUser> {
   // ─────────────────────────────────────────────────────────────
 
   Widget _buildHomePage() {
-    return const UserCardList();
+    return UserCardList(
+      onMessageTap: (userId) {
+        final chatBloc = context.read<ChatBloc>();
+
+        setState(() {
+          _currentIndex = 2;
+        });
+
+        _pageController.jumpToPage(2);
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => BlocProvider.value(
+              value: chatBloc,
+              child: ChatPage(
+                otherUserId: userId,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   // ─────────────────────────────────────────────────────────────
@@ -209,15 +233,7 @@ class _HomeUserState extends State<HomeUser> {
   // ─────────────────────────────────────────────────────────────
 
   Widget _buildMessagesPage() {
-    return const Center(
-      child: Text(
-        'Mensajes',
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
+    return const ConversationsPage();
   }
 
   // ─────────────────────────────────────────────────────────────
@@ -232,6 +248,61 @@ class _HomeUserState extends State<HomeUser> {
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
+      ),
+    );
+  }
+
+
+}
+
+class _OpenChatFromHomePage extends StatelessWidget {
+  final String otherUserId;
+
+  const _OpenChatFromHomePage({
+    required this.otherUserId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: Future<void>.delayed(Duration.zero),
+      builder: (context, snapshot) {
+        return _OpenChatLoader(otherUserId: otherUserId);
+      },
+    );
+  }
+}
+
+class _OpenChatLoader extends StatefulWidget {
+  final String otherUserId;
+
+  const _OpenChatLoader({
+    required this.otherUserId,
+  });
+
+  @override
+  State<_OpenChatLoader> createState() => _OpenChatLoaderState();
+}
+
+class _OpenChatLoaderState extends State<_OpenChatLoader> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      context.read<ChatBloc>().add(
+        OpenConversationEvent(widget.otherUserId),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

@@ -4,8 +4,12 @@ import 'package:smartchat/data/models/UserCardResponse.dart';
 import 'package:smartchat/presentation/bloc/user/user_bloc.dart';
 
 class UserCardList extends StatelessWidget {
-  const UserCardList({super.key});
+  final ValueChanged<String>? onMessageTap;
 
+  const UserCardList({
+    super.key,
+    this.onMessageTap,
+  });
   static const Color smartChatBlue = Color(0xFF1677FF);
   static const Color backgroundColor = Color(0xFFF5F7FB);
 
@@ -46,8 +50,10 @@ class UserCardList extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                            (context, index) =>
-                            UserCard(user: state.users[index]),
+                            (context, index) => UserCard(
+                          user: state.users[index],
+                          onMessageTap: onMessageTap,
+                        ),
                         childCount: state.users.length,
                       ),
                     ),
@@ -285,8 +291,13 @@ class UserCardList extends StatelessWidget {
 // ── UserCard ───────────────────────────────────────────────────────────────────
 class UserCard extends StatelessWidget {
   final UserCardResponse user;
+  final ValueChanged<String>? onMessageTap;
 
-  const UserCard({super.key, required this.user});
+  const UserCard({
+    super.key,
+    required this.user,
+    this.onMessageTap,
+  });
 
   static const Color smartChatBlue = Color(0xFF1677FF);
 
@@ -544,7 +555,10 @@ class UserCard extends StatelessWidget {
       color: smartChatBlue,
       borderRadius: BorderRadius.circular(15),
       child: InkWell(
-        onTap: () => debugPrint('Abrir chat con: ${user.id}'),
+        onTap: () {
+          debugPrint('Botón de chat presionado. Usuario: ${user.id}');
+          onMessageTap?.call(user.id);
+        },
         borderRadius: BorderRadius.circular(15),
         child: Container(
           width: 45,
