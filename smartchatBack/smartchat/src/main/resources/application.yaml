@@ -21,7 +21,7 @@ logging:
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
   data:
     mongodb:
-      uri: mongodb://localhost:27017/smartchat
+      uri: mongodb+srv://<root>:<2004>@cluster0.jcie6sg.mongodb.net/
 
 jwt:
   secret: SmartChatSecretKey2026SuperSecure
