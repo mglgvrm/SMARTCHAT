@@ -1,6 +1,7 @@
 spring:
   data:
     mongodb:
+      uri: mongodb+srv://root:2004@cluster0.jcie6sg.mongodb.net/smartchat?retryWrites=true&w=majority
       auto-index-creation: true
   application:
     name: smartchat
@@ -16,12 +17,9 @@ spring:
               - profile
 logging:
   level:
-    org.springframework.security: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
-  data:
-    mongodb:
-      uri: mongodb+srv://<root>:<2004>@cluster0.jcie6sg.mongodb.net/
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+
 
 jwt:
   secret: SmartChatSecretKey2026SuperSecure
